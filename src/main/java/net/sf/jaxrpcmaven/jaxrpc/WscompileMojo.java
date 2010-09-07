@@ -1,4 +1,4 @@
-package net.sf.mavenjaxrpc.jaxrpc;
+package net.sf.jaxrpcmaven.jaxrpc;
 
 import com.sun.xml.rpc.tools.wscompile.CompileTool;
 

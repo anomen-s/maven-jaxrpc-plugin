@@ -1,4 +1,4 @@
-package net.sf.mavenjaxrpc.jaxrpc;
+package net.sf.jaxrpcmaven.jaxrpc;
 
 public class ProxyConfiguration {
 
