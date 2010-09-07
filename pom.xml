@@ -27,6 +27,14 @@
 		</developer>
 	</developers>
 
+	<distributionManagement>
+		<repository>
+			<id>maven-jaxrpc-plugin-repository</id>
+			<name>maven-jaxrpc-plugin maven releases repository</name>
+			<url>file://${basedir}/../../repository</url>
+		</repository>
+	</distributionManagement>
+
 	<properties>
     		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
