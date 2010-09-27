@@ -4,6 +4,7 @@ import com.sun.xml.rpc.tools.wscompile.CompileTool;
 
 import java.util.*;
 import java.io.File;
+import java.io.IOException;
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
 
 import org.apache.maven.plugin.AbstractMojo;
@@ -11,6 +12,8 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.project.MavenProject;
+
+import org.apache.commons.lang.SystemUtils;
 
 /**
  * A wscompile mojo for maven 2.
@@ -234,6 +237,8 @@ public class WscompileMojo extends AbstractMojo {
         }
 
         cp.add(project.getBuild().getOutputDirectory());
+        
+        cp.add(findToolsJar());
     
         Iterator cpIter = cp.iterator();
         StringBuffer oBuilder = new StringBuffer(2000);
@@ -242,6 +247,35 @@ public class WscompileMojo extends AbstractMojo {
             oBuilder.append( File.pathSeparator ).append( cpIter.next() );
      
         return oBuilder.toString();
+    }
+
+
+    /**
+     * Figure out where the tools.jar file lives.
+     */
+    private File findToolsJar() {
+        File javaHome = new File(System.getProperty("java.home"));
+       
+
+        File file = null;
+	try {
+        	if (SystemUtils.IS_OS_MAC_OSX) {
+        	    file = new File(javaHome, "../Classes/classes.jar").getCanonicalFile();
+        	}
+        	else {
+        	    file = new File(javaHome, "../lib/tools.jar").getCanonicalFile();
+        	}
+        } catch (IOException ex) {
+		getLog().error("Couldn't find tools.jar.", ex);
+	}
+	
+        if ((file == null) || !file.exists()) {
+            getLog().error("Missing tools.jar at: $file");
+        }
+        
+        getLog().debug("Using tools.jar: " + file);
+        
+        return file;
     }
 
 }
