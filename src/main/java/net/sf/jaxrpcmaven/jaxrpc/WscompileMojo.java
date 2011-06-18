@@ -1,16 +1,18 @@
 package net.sf.jaxrpcmaven.jaxrpc;
 
 import com.sun.xml.rpc.tools.wscompile.CompileTool;
+import java.net.MalformedURLException;
 
 import java.util.*;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
+import java.net.URLClassLoader;
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
-import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.project.MavenProject;
 
 import org.apache.commons.lang.SystemUtils;
@@ -18,8 +20,11 @@ import org.apache.commons.lang.SystemUtils;
 /**
  * A wscompile mojo for maven 2.
  *
+ * See http://download.oracle.com/docs/cd/E17802_01/webservices/webservices/docs/1.5/jaxrpc/jaxrpc-tools.html
+  * for detailed manual.
  * @author <a href="ludek.h@gmail.com">Ludek Hlavacek</a>
  * @goal wscompile
+ * @requiresDependencyResolution compile
  * @requiresDependencyResolution runtime
  * @requiresProject
  * @phase process-classes
@@ -36,7 +41,8 @@ public class WscompileMojo extends AbstractMojo {
 	 */
 	private MavenProject project;
 
-	/**
+
+        /**
 	 * operation
 	 * 
 	 * @parameter
@@ -114,6 +120,12 @@ public class WscompileMojo extends AbstractMojo {
 	 * @parameter default-value="${project.build.directory}/generated-sources/jaxrpc"
 	 */
 	private File s;
+	/**
+	 * Should be generated source files added to compile path?
+	 *
+	 * @parameter default-value="true"
+	 */
+	private boolean addSources;
 
 	/**
 	 * specify where to place generated output files
@@ -140,15 +152,25 @@ public class WscompileMojo extends AbstractMojo {
 	private String config;
 
 
-	public void execute() throws MojoExecutionException {
-		Log log = getLog();
+        private void addToolsToCL()
+        {
+            try {
+                URL url = new URL("jar:file://" + findToolsJar() + "!/");
+                ClassLoader cl = new URLClassLoader(new URL[] { url }, getClass().getClassLoader());
+                Thread.currentThread().setContextClassLoader(cl);
+            } catch (MalformedURLException e) {
+                getLog().warn("Failed to add tools.jar to classpath");
+            }
+        }
+
+	public void execute() throws MojoExecutionException, MojoFailureException {
 		
 		List args = new ArrayList();
 
 		args.add("-"+operation);
 		
 		args.add("-cp");
-		args.add(getCp() /*project.getProperties().getProperty("project.build.outputDirectory")*/);
+		args.add(getCp());
 
 		if (features != null) {
 		    args.add("-features:"+features);
@@ -170,25 +192,28 @@ public class WscompileMojo extends AbstractMojo {
 		
 		if (mapping != null) {
 		    args.add("-mapping");
-		    args.add(mapping.toString());
+		    args.add(mapping.getAbsolutePath());
 		}
 		if (model != null) {
 		    args.add("-model");
-		    args.add(model.toString());
+		    args.add(model.getAbsolutePath());
 		}
 		if (nd != null) {
 		    args.add("-nd");
-		    args.add(nd.toString());
+		    args.add(nd.getAbsolutePath());
 		    nd.mkdirs();
 		}
 		if (s != null) {
 		    args.add("-s");
-		    args.add(s.toString());
+		    args.add(s.getAbsolutePath());
 		    s.mkdirs();
+                    if (addSources) {
+                        project.addCompileSourceRoot(s.getAbsolutePath());
+                    }
 		}
 		if (d != null) {
 		    args.add("-d");
-		    args.add(d.toString());
+		    args.add(d.getAbsolutePath());
 		    d.mkdirs();
 		}
 		if (source != null) {
@@ -200,27 +225,29 @@ public class WscompileMojo extends AbstractMojo {
 		}
 		
 		args.add(config);
-		
+
 		String[] strArgs = (String[]) args.toArray(new String[args.size()]);
 		getLog().info(Arrays.toString(strArgs));
-		
+
+                addToolsToCL();
+                
 		CompileTool tool = new CompileTool(System.out, "wscompile");
-		getLog().info("wscompile " + ":" + tool.run(strArgs));
+                boolean result = tool.run(strArgs);
+                if (!result) {
+                    throw new MojoFailureException("Wscompile failed");
+                }
+		getLog().info("Wscompile succeeded");
 	}
 
 	
-	void setProject(MavenProject project) {
-		this.project = project;
-	}
-
         
     /**
     * Returns the an isolated classloader.
     *
-    * @return ClassLoader
+    * @return cpasspath list
     * @noinspection unchecked
     */
-    protected String getCp()
+    private String getCp()
     {
 
         Set cp = new HashSet();
@@ -229,6 +256,7 @@ public class WscompileMojo extends AbstractMojo {
 	    List classpathElements = project.getCompileClasspathElements();
             for (int i = 0; i < classpathElements.size(); i++)
             {
+                //getLog().info("CP: "+classpathElements.get(i));
                 cp.add(classpathElements.get(i));
             }
         } catch (DependencyResolutionRequiredException ex) {
