@@ -6,7 +6,7 @@
 	<packaging>maven-plugin</packaging>
 	<version>0.3-SNAPSHOT</version>
 	<name>maven-jaxrpc-plugin Maven Mojo</name>
-	<url>http://sourceforge.net/projects/jaxrpc-maven</url>
+	<url>https://github.com/anomen-s/maven-jaxrpc-plugin</url>
 	<description>Invokes JAX-RPC wscompile.</description>
 
 	<licenses>
@@ -22,21 +22,21 @@
 			<id>ludek-h</id>
 			<name>Luděk Hlaváček</name>
 			<email>ludek.h@gmail.com</email>
-			<organization>SourceForge.net</organization>
-			<organizationUrl>http://sourceforge.net/projects/jaxrpc-maven</organizationUrl>
+			<organization>GitHub</organization>
+			<organizationUrl>https://github.com/anomen-s/maven-jaxrpc-plugin</organizationUrl>
 			<roles>
 				<role>architect</role>
 				<role>developer</role>
 			</roles>
 			<timezone>GMT+1</timezone>
-			<url>http://sourceforge.net/projects/jaxrpc-maven</url>
+			<url>https://github.com/anomen-s/maven-jaxrpc-plugin</url>
 		</developer>
 	</developers>
 
         <scm>
-                <connection>scm:svn:https://jaxrpc-maven.svn.sourceforge.net/svnroot/jaxrpc-maven/trunk/maven-jaxrpc-plugin</connection>
-                <developerConnection>scm:svn:https://jaxrpc-maven.svn.sourceforge.net/svnroot/jaxrpc-maven/trunk/maven-jaxrpc-plugin</developerConnection>
-                <url>https://jaxrpc-maven.svn.sourceforge.net/svnroot/jaxrpc-maven/trunk/maven-jaxrpc-plugin</url>
+                <connection>scm:git:https://github.com/anomen-s/maven-jaxrpc-plugin.git</connection>
+                <developerConnection>scm:git:https://github.com/anomen-s/maven-jaxrpc-plugin.git</developerConnection>
+                <url>https://github.com/anomen-s/maven-jaxrpc-plugin.git</url>
         </scm>
 
 	<distributionManagement>
