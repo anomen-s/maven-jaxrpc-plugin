@@ -1,0 +1,6 @@
+# generated code
+target/
+
+# IDE files
+.*
+*.iml
