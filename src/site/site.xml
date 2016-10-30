@@ -1,0 +1,14 @@
+<project xmlns="http://maven.apache.org/DECORATION/1.4.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/DECORATION/1.4.0 http://maven.apache.org/xsd/decoration-1.4.0.xsd">
+  <body>
+    <links>
+      <item name="JAX-RPC" href="https://java.net/projects/jax-rpc/" />
+    </links>
+    <menu name="Overview">
+      <item name="Introduction" href="index.html"/>
+      <item name="Usage" href="usage.html"/>
+    </menu>
+    <menu ref="reports"/>
+  </body>
+</project>
