@@ -25,7 +25,7 @@ Sample of maven-jaxrpc-plugin usage
 			<plugin>
 				<groupId>net.sf.jaxrpc-maven</groupId>
 				<artifactId>maven-jaxrpc-plugin</artifactId>
-				<version>0.2</version>
+				<version>0.3</version>
 				<executions>
 					<execution>
 						<id>jax-rpc-scoring-client</id>
