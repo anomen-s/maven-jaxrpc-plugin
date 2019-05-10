@@ -42,14 +42,20 @@
 	</scm>
 
 	<distributionManagement>
-		<repository>
+		<!--repository>
 			<id>maven-jaxrpc-plugin-repository</id>
-			<name>maven-jaxrpc-plugin maven releases repository</name>
+			<name>local maven-jaxrpc-plugin maven releases repository</name>
 			<url>file://${project.basedir}/target/repository</url>
+		</repository-->
+		<repository>
+			<id>oss.sonatype.org</id>
+			<name>maven-jaxrpc-plugin maven releases repository</name>
+			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
 		</repository>
 	</distributionManagement>
-
-	<properties>
+  
+  
+  	<properties>
 		<maven.version>3.1.1</maven.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
