@@ -35,7 +35,7 @@ Content of pom.xml:
 		<plugins>
 			<plugin>
 				<groupId>net.sf.jaxrpc-maven</groupId>
-				<artifactId>maven-jaxrpc-plugin</artifactId>
+				<artifactId>jaxrpc-maven-plugin</artifactId>
 				<version>0.3.1</version>
 				<executions>
 					<execution>
