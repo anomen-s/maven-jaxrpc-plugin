@@ -36,7 +36,7 @@ Content of pom.xml:
 			<plugin>
 				<groupId>net.sf.jaxrpc-maven</groupId>
 				<artifactId>maven-jaxrpc-plugin</artifactId>
-				<version>0.3</version>
+				<version>0.3.1</version>
 				<executions>
 					<execution>
 						<id>jax-rpc-scoring-client</id>
