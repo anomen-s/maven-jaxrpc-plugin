@@ -55,6 +55,16 @@ Content of pom.xml:
 					<keep>true</keep>
 					<verbose>true</verbose>
 				</configuration>
+				<dependencies>
+				    <!-- see here: https://github.com/anomen-s/maven-jaxrpc-plugin/issues/4 -->
+				    <dependency>
+				        <groupId>com.sun</groupId>
+				        <artifactId>tools</artifactId>
+				        <version>1.5.0</version>
+				        <scope>system</scope>
+				        <systemPath>${java.home}/../lib/tools.jar</systemPath>
+				    </dependency>
+				</dependencies>
 			</plugin>
 		</plugins>
 	</build>
